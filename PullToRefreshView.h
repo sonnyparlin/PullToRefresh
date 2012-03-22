@@ -30,7 +30,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 typedef enum {
-    PullToRefreshViewStateNormal = 0,
+  PullToRefreshViewStateNormal = 0,
 	PullToRefreshViewStateReady,
 	PullToRefreshViewStateLoading
 } PullToRefreshViewState;
@@ -38,8 +38,6 @@ typedef enum {
 @protocol PullToRefreshViewDelegate;
 
 @interface PullToRefreshView : UIView {
-	//id<PullToRefreshViewDelegate> delegate;
-    //UIScrollView *__weak scrollView;
 	PullToRefreshViewState state;
     
 	UILabel *lastUpdatedLabel;
