@@ -205,6 +205,7 @@
 
 - (void)dealloc {
 	[scrollView removeObserver:self forKeyPath:@"contentOffset"];
+	scrollView = nil;
 }
 
 @end
