@@ -45,17 +45,15 @@
     if (shouldShow) [activityView startAnimating];
     else [activityView stopAnimating];
     
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:(animated ? 0.1f : 0.0)];
-    arrowImage.opacity = (shouldShow ? 0.0 : 1.0);
-    [UIView commitAnimations];
+    [UIView animateWithDuration:(animated ? 0.1f : 0.0) animations:^{
+        arrowImage.opacity = (shouldShow ? 0.0 : 1.0);
+    }];
 }
 
 - (void)setImageFlipped:(BOOL)flipped {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.1f];
-    arrowImage.transform = (flipped ? CATransform3DMakeRotation(M_PI * 2, 0.0f, 0.0f, 1.0f) : CATransform3DMakeRotation(M_PI, 0.0f, 0.0f, 1.0f));
-    [UIView commitAnimations];
+    [UIView animateWithDuration:0.1f animations:^{
+        arrowImage.transform = (flipped ? CATransform3DMakeRotation(M_PI * 2, 0.0f, 0.0f, 1.0f) : CATransform3DMakeRotation(M_PI, 0.0f, 0.0f, 1.0f));
+    }];
 }
 
 - (id)initWithScrollView:(UIScrollView *)scroll {
@@ -178,10 +176,9 @@
             }
         } else {
             if (state == PullToRefreshViewStateReady) {
-                [UIView beginAnimations:nil context:NULL];
-                [UIView setAnimationDuration:0.2f];
-                [self setState:PullToRefreshViewStateLoading];
-                [UIView commitAnimations];
+                [UIView animateWithDuration:0.2f animations:^{
+                    [self setState:PullToRefreshViewStateLoading];
+                }];
                 
                 if ([delegate respondsToSelector:@selector(pullToRefreshViewShouldRefresh:)])
                     [delegate pullToRefreshViewShouldRefresh:self];
@@ -193,10 +190,9 @@
 
 - (void)finishedLoading {
     if (state == PullToRefreshViewStateLoading) {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.3f];
-        [self setState:PullToRefreshViewStateNormal];
-        [UIView commitAnimations];
+        [UIView animateWithDuration:0.3f animations:^{
+            [self setState:PullToRefreshViewStateNormal];
+        }];
     }
 }
 
