@@ -119,9 +119,9 @@
 		date = [delegate pullToRefreshViewLastUpdated:self];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setAMSymbol:@"AM"];
-    [formatter setPMSymbol:@"PM"];
-    [formatter setDateFormat:@"MM/dd/yy hh:mm a"];
+    [formatter setLocale:[NSLocale currentLocale]];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterMediumStyle];
     lastUpdatedLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [formatter stringFromDate:date]];
 }
 
