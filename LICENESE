@@ -1,12 +1,3 @@
-//
-//  PullToRefreshView.h
-//  Grant Paul (chpwn)
-//
-//  (based on EGORefreshTableHeaderView)
-//
-//  Created by Devin Doty on 10/14/09October14.
-//  Copyright 2009 enormego. All rights reserved.
-//
 // The MIT License (MIT)
 // Copyright © 2012 Sonny Parlin, http://sonnyparlin.com
 // 
@@ -27,42 +18,4 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-//
 
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
-
-typedef enum {
-  PullToRefreshViewStateNormal = 0,
-	PullToRefreshViewStateReady,
-	PullToRefreshViewStateLoading
-} PullToRefreshViewState;
-
-@protocol PullToRefreshViewDelegate;
-
-@interface PullToRefreshView : UIView {
-	PullToRefreshViewState state;
-    
-	UILabel *lastUpdatedLabel;
-	UILabel *statusLabel;
-	CALayer *arrowImage;
-	UIActivityIndicatorView *activityView;
-}
-
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, weak) id<PullToRefreshViewDelegate> delegate;
-
-- (void)refreshLastUpdatedDate;
-- (void)finishedLoading;
-- (void)setState:(PullToRefreshViewState)state_;
-
-- (id)initWithScrollView:(UIScrollView *)scrollView;
-
-@end
-
-@protocol PullToRefreshViewDelegate <NSObject>
-
-@optional
-- (void)pullToRefreshViewShouldRefresh:(PullToRefreshView *)view;
-- (NSDate *)pullToRefreshViewLastUpdated:(PullToRefreshView *)view;
-@end
