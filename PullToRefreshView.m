@@ -106,7 +106,8 @@
         activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		activityView.frame = CGRectMake(10.0f, frame.size.height - 38.0f, 20.0f, 20.0f);
 		[self addSubview:activityView];
-        
+		
+			self.enabled = YES;
 		[self setState:PullToRefreshViewStateNormal];
     }
     
