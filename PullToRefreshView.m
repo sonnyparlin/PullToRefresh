@@ -106,7 +106,8 @@
         activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		activityView.frame = CGRectMake(10.0f, frame.size.height - 38.0f, 20.0f, 20.0f);
 		[self addSubview:activityView];
-        
+		
+			self.enabled = YES;
 		[self setState:PullToRefreshViewStateNormal];
     }
     
@@ -115,6 +116,19 @@
 
 #pragma mark -
 #pragma mark Setters
+
+- (void)setEnabled:(BOOL)enabled
+{
+	if (enabled == _enabled)
+		return;
+	
+	_enabled = enabled;
+	[UIView animateWithDuration:0.25
+									 animations:
+	 ^{
+		 self.alpha = enabled ? 1 : 0;
+	 }];
+}
 
 - (void)refreshLastUpdatedDate {
     NSDate *date = [NSDate date];
@@ -164,7 +178,7 @@
 #pragma mark UIScrollView
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"contentOffset"]) {
+    if ([keyPath isEqualToString:@"contentOffset"] && self.isEnabled) {
         if (scrollView.isDragging) {
             if (state == PullToRefreshViewStateReady) {
                 if (scrollView.contentOffset.y > -65.0f && scrollView.contentOffset.y < 0.0f) 
