@@ -7,10 +7,10 @@
 //  Created by Devin Doty on 10/14/09October14.
 //  Copyright 2009 enormego. All rights reserved.
 //
-// 
+//
 // The MIT License (MIT)
 // Copyright © 2012 Sonny Parlin, http://sonnyparlin.com
-// 
+//
 // //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
 //  in the Software without restriction, including without limitation the rights
@@ -107,7 +107,7 @@
 		activityView.frame = CGRectMake(10.0f, frame.size.height - 38.0f, 20.0f, 20.0f);
 		[self addSubview:activityView];
 		
-			self.enabled = YES;
+        self.enabled = YES;
 		[self setState:PullToRefreshViewStateNormal];
     }
     
@@ -124,7 +124,7 @@
 	
 	_enabled = enabled;
 	[UIView animateWithDuration:0.25
-									 animations:
+                     animations:
 	 ^{
 		 self.alpha = enabled ? 1 : 0;
 	 }];
@@ -181,16 +181,20 @@
     if ([keyPath isEqualToString:@"contentOffset"] && self.isEnabled) {
         if (scrollView.isDragging) {
             if (state == PullToRefreshViewStateReady) {
-                if (scrollView.contentOffset.y > -65.0f && scrollView.contentOffset.y < 0.0f) 
+                if (scrollView.contentOffset.y > -65.0f && scrollView.contentOffset.y < 0.0f) {
                     [self setState:PullToRefreshViewStateNormal];
+                }
             } else if (state == PullToRefreshViewStateNormal) {
-                if (scrollView.contentOffset.y < -65.0f)
+                if (scrollView.contentOffset.y < -65.0f) {
+                    [self playSound:@"psst1" withExt:@"wav"];
                     [self setState:PullToRefreshViewStateReady];
+                }
             } else if (state == PullToRefreshViewStateLoading) {
-                if (scrollView.contentOffset.y >= 0)
+                if (scrollView.contentOffset.y >= 0) {
                     scrollView.contentInset = UIEdgeInsetsZero;
-                else
+                } else {
                     scrollView.contentInset = UIEdgeInsetsMake(MIN(-scrollView.contentOffset.y, 60.0f), 0, 0, 0);
+                }
             }
         } else {
             if (state == PullToRefreshViewStateReady) {
@@ -198,8 +202,9 @@
                     [self setState:PullToRefreshViewStateLoading];
                 }];
                 
-                if ([delegate respondsToSelector:@selector(pullToRefreshViewShouldRefresh:)])
+                if ([delegate respondsToSelector:@selector(pullToRefreshViewShouldRefresh:)]) {
                     [delegate pullToRefreshViewShouldRefresh:self];
+                }
             }
         }
         self.frame = CGRectMake(scrollView.contentOffset.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
@@ -208,10 +213,19 @@
 
 - (void)finishedLoading {
     if (state == PullToRefreshViewStateLoading) {
+        [self playSound:@"pop" withExt:@"wav"];
         [UIView animateWithDuration:0.3f animations:^{
             [self setState:PullToRefreshViewStateNormal];
         }];
     }
+}
+
+-(void) playSound:(NSString *)fName withExt:(NSString *) ext
+{
+    SystemSoundID completeSound;
+    NSURL *audioPath = [[NSBundle mainBundle] URLForResource:fName withExtension:ext];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)audioPath, &completeSound);
+    AudioServicesPlaySystemSound (completeSound);
 }
 
 #pragma mark -
