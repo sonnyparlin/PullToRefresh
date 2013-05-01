@@ -44,7 +44,7 @@
 @end
 
 @implementation PullToRefreshView
-@synthesize delegate, scrollView;
+@synthesize delegate, scrollView, startingContentInset;
 
 - (void)showActivity:(BOOL)shouldShow animated:(BOOL)animated {
     if (shouldShow) [activityView startAnimating];
@@ -67,6 +67,7 @@
     if ((self = [super initWithFrame:frame])) {
         scrollView = scroll;
         [scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
+        self.startingContentInset = scrollView.contentInset;
         
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		self.backgroundColor = [UIColor colorWithRed:226.0/255.0 green:231.0/255.0 blue:237.0/255.0 alpha:1.0];
@@ -160,16 +161,16 @@
 			statusLabel.text = @"Release to refresh...";
 			[self showActivity:NO animated:NO];
             [self setImageFlipped:YES];
-            scrollView.contentInset = UIEdgeInsetsZero;
-			break;
+            scrollView.contentInset = self.startingContentInset;
+            break;
             
 		case PullToRefreshViewStateNormal:
 			statusLabel.text = @"Pull down to refresh...";
 			[self showActivity:NO animated:NO];
             [self setImageFlipped:NO];
 			[self refreshLastUpdatedDate];
-            scrollView.contentInset = UIEdgeInsetsZero;
 			break;
+            scrollView.contentInset = self.startingContentInset;
             
 		case PullToRefreshViewStateLoading:
 			statusLabel.text = @"Loading...";
@@ -200,7 +201,7 @@
                 }
             } else if (state == PullToRefreshViewStateLoading) {
                 if (scrollView.contentOffset.y >= 0) {
-                    scrollView.contentInset = UIEdgeInsetsZero;
+                    scrollView.contentInset = self.startingContentInset;
                 } else {
                     scrollView.contentInset = UIEdgeInsetsMake(MIN(-scrollView.contentOffset.y, 60.0f), 0, 0, 0);
                 }
