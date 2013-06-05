@@ -169,8 +169,8 @@
 			[self showActivity:NO animated:NO];
             [self setImageFlipped:NO];
 			[self refreshLastUpdatedDate];
-			break;
             scrollView.contentInset = self.startingContentInset;
+			break;
             
 		case PullToRefreshViewStateLoading:
 			statusLabel.text = @"Loading...";
